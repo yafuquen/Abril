@@ -1,10 +1,13 @@
 package com.yafuquen.abril.domain.interactor.impl;
 
+import com.yafuquen.abril.domain.exception.SignInValidationException;
 import com.yafuquen.abril.domain.interactor.SignInInteractor;
 import com.yafuquen.abril.domain.model.User;
 import com.yafuquen.abril.domain.repository.UserRepository;
-import io.reactivex.Observable;
+
 import javax.inject.Inject;
+
+import io.reactivex.Observable;
 
 /**
  * Implementation of sign in use case.
@@ -13,13 +16,31 @@ import javax.inject.Inject;
  */
 public class SignInInteractorImpl implements SignInInteractor {
 
-  private final UserRepository userRepository;
+    private final UserRepository userRepository;
 
-  @Inject public SignInInteractorImpl(UserRepository userRepository) {
-    this.userRepository = userRepository;
-  }
+    @Inject
+    public SignInInteractorImpl(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
-  @Override public Observable<User> signIn(String user, String password) {
-    return userRepository.signIn(user, password);
-  }
+    @Override
+    public Observable<User> signIn(String user, String password) {
+        if (!isValidUsername(user)) {
+            return Observable.error(new SignInValidationException(
+                    SignInValidationException.ValidationErrorType.INVALID_USERNAME));
+        }
+        if (!isValidPassword(password)) {
+            return Observable.error(new SignInValidationException(
+                    SignInValidationException.ValidationErrorType.INVALID_PASSWORD));
+        }
+        return userRepository.signIn(user, password);
+    }
+
+    private boolean isValidPassword(String password) {
+        return password != null && password.trim().length() >= 8;
+    }
+
+    private boolean isValidUsername(String user) {
+        return user != null && user.trim().length() >= 6;
+    }
 }

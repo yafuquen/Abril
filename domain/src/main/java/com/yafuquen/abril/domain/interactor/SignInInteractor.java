@@ -1,6 +1,7 @@
 package com.yafuquen.abril.domain.interactor;
 
 import com.yafuquen.abril.domain.model.User;
+
 import io.reactivex.Observable;
 
 /**
@@ -10,5 +11,5 @@ import io.reactivex.Observable;
  */
 public interface SignInInteractor {
 
-  Observable<User> signIn(String user, String password);
+    Observable<User> signIn(String user, String password);
 }

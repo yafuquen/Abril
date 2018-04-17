@@ -7,11 +7,11 @@ package com.yafuquen.abril.domain.exception;
  */
 public class SignInException extends Exception {
 
-  public SignInException() {
-    super();
-  }
+    public SignInException() {
+        super();
+    }
 
-  public SignInException(Exception e) {
-    super(e);
-  }
+    public SignInException(Exception e) {
+        super(e);
+    }
 }

@@ -5,6 +5,7 @@ import com.yafuquen.abril.data.repository.UserRepositoryImpl;
 import com.yafuquen.abril.domain.interactor.SignInInteractor;
 import com.yafuquen.abril.domain.interactor.impl.SignInInteractorImpl;
 import com.yafuquen.abril.domain.repository.UserRepository;
+
 import dagger.Module;
 import dagger.Provides;
 
@@ -13,17 +14,21 @@ import dagger.Provides;
  *
  * @author yafuquen
  */
-@Module public class BaseUserModule {
+@Module
+public class BaseUserModule {
 
-  @Provides FirebaseAuth provideFirebaseAuth() {
-    return FirebaseAuth.getInstance();
-  }
+    @Provides
+    FirebaseAuth provideFirebaseAuth() {
+        return FirebaseAuth.getInstance();
+    }
 
-  @Provides UserRepository provideUserRepository(FirebaseAuth firebaseAuth) {
-    return new UserRepositoryImpl(firebaseAuth);
-  }
+    @Provides
+    UserRepository provideUserRepository(FirebaseAuth firebaseAuth) {
+        return new UserRepositoryImpl(firebaseAuth);
+    }
 
-  @Provides SignInInteractor provideSignInInteractor(UserRepository userRepository) {
-    return new SignInInteractorImpl(userRepository);
-  }
+    @Provides
+    SignInInteractor provideSignInInteractor(UserRepository userRepository) {
+        return new SignInInteractorImpl(userRepository);
+    }
 }
