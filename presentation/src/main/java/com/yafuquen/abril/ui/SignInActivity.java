@@ -3,15 +3,11 @@ package com.yafuquen.abril.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.EditText;
 
 import com.yafuquen.abril.R;
-import com.yafuquen.abril.data.injection.module.ApplicationModule;
-import com.yafuquen.abril.data.injection.module.UserModule;
 import com.yafuquen.abril.domain.exception.SignInValidationException;
-import com.yafuquen.abril.injection.component.DaggerUserComponent;
 import com.yafuquen.abril.injection.component.UserComponent;
 import com.yafuquen.abril.presenter.SignInPresenter;
 
@@ -21,7 +17,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class SignInActivity extends AppCompatActivity implements SignInPresenter.View {
+public class SignInActivity extends BaseActivity implements SignInPresenter.View {
 
     @Inject
     SignInPresenter signInPresenter;
@@ -59,8 +55,7 @@ public class SignInActivity extends AppCompatActivity implements SignInPresenter
 
     private void signIn() {
         signInButton.setEnabled(false);
-        signInPresenter.signIn(usernameInput.getText().toString(),
-                passwordInput.getText().toString());
+        signInPresenter.signIn(usernameInput.getText().toString(), passwordInput.getText().toString());
     }
 
     @Override
@@ -73,8 +68,11 @@ public class SignInActivity extends AppCompatActivity implements SignInPresenter
     @Override
     public void onFailedSignIn(Throwable exception) {
         signInButton.setEnabled(true);
-        new AlertDialog.Builder(this).setMessage(getSignInExceptionMessage(exception)).setTitle(
-                R.string.sign_in).setPositiveButton(R.string.ok, null).create().show();
+        new AlertDialog.Builder(this).setMessage(getSignInExceptionMessage(exception))
+                .setTitle(R.string.sign_in)
+                .setPositiveButton(R.string.ok, null)
+                .create()
+                .show();
     }
 
     private int getSignInExceptionMessage(Throwable exception) {
@@ -90,14 +88,7 @@ public class SignInActivity extends AppCompatActivity implements SignInPresenter
     }
 
     @Override
-    public boolean isReady() {
-        return !isFinishing();
-    }
-
-    private void inject() {
-        UserComponent userComponent =
-                DaggerUserComponent.builder().userModule(
-                        new UserModule()).applicationModule(new ApplicationModule()).build();
+    protected void injectToActivity(UserComponent userComponent) {
         userComponent.inject(this);
     }
 }

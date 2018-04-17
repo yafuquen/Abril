@@ -12,4 +12,6 @@ import io.reactivex.Observable;
 public interface TopicsRepository {
 
     Observable<Topic> getAvailableTopics();
+
+    void subscribeToTopic(Topic topic);
 }

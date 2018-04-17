@@ -2,4 +2,5 @@
 <resources>
     <string name="app_name">Abril</string>
     <string name="ok">Ok</string>
+    <string name="title_activity_topic_messages">TopicMessagesActivity</string>
 </resources>

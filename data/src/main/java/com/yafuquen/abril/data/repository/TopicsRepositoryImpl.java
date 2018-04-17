@@ -31,22 +31,29 @@ class TopicsRepositoryImpl implements TopicsRepository {
         return Observable.create(new ObservableOnSubscribe<Topic>() {
             @Override
             public void subscribe(final ObservableEmitter<Topic> emitter) {
-                FirebaseDatabase.getInstance().getReference().child(
-                        "topics").addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        for (DataSnapshot data : dataSnapshot.getChildren()) {
-                            emitter.onNext(data.getValue(Topic.class));
-                        }
-                        emitter.onComplete();
-                    }
+                FirebaseDatabase.getInstance()
+                        .getReference()
+                        .child("topics")
+                        .addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                                    emitter.onNext(data.getValue(Topic.class));
+                                }
+                                emitter.onComplete();
+                            }
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        emitter.tryOnError(new TopicsException());
-                    }
-                });
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                                emitter.tryOnError(new TopicsException());
+                            }
+                        });
             }
         });
+    }
+
+    @Override
+    public void subscribeToTopic(Topic topic) {
+        firebaseMessaging.subscribeToTopic(topic.getName());
     }
 }

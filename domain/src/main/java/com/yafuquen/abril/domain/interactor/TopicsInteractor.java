@@ -2,15 +2,14 @@ package com.yafuquen.abril.domain.interactor;
 
 import com.yafuquen.abril.domain.model.Topic;
 
-import io.reactivex.Observable;
-
+import io.reactivex.observers.DisposableObserver;
 
 /**
  * Interactor for topics management.
  *
  * @author yafuquen
  */
-public interface TopicsInteractor {
+public interface TopicsInteractor extends BaseInteractor {
 
-    Observable<Topic> getAvailableTopics();
+    void getAvailableTopics(DisposableObserver<Topic> observer);
 }
