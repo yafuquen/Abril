@@ -8,11 +8,11 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.yafuquen.abril.R;
-import com.yafuquen.abril.data.injection.module.BaseUserModule;
+import com.yafuquen.abril.data.injection.module.ApplicationModule;
+import com.yafuquen.abril.data.injection.module.UserModule;
 import com.yafuquen.abril.domain.exception.SignInValidationException;
 import com.yafuquen.abril.injection.component.DaggerUserComponent;
 import com.yafuquen.abril.injection.component.UserComponent;
-import com.yafuquen.abril.data.injection.module.ApplicationModule;
 import com.yafuquen.abril.presenter.SignInPresenter;
 
 import javax.inject.Inject;
@@ -43,10 +43,7 @@ public class SignInActivity extends AppCompatActivity implements SignInPresenter
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        UserComponent userComponent =
-                DaggerUserComponent.builder().baseUserModule(
-                        new BaseUserModule()).applicationModule(new ApplicationModule()).build();
-        userComponent.inject(this);
+        inject();
         setContentView(R.layout.activity_sign_in);
         ButterKnife.bind(this);
         signInPresenter.setView(this);
@@ -95,5 +92,12 @@ public class SignInActivity extends AppCompatActivity implements SignInPresenter
     @Override
     public boolean isReady() {
         return !isFinishing();
+    }
+
+    private void inject() {
+        UserComponent userComponent =
+                DaggerUserComponent.builder().userModule(
+                        new UserModule()).applicationModule(new ApplicationModule()).build();
+        userComponent.inject(this);
     }
 }

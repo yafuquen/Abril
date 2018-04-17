@@ -5,8 +5,6 @@ import com.yafuquen.abril.domain.interactor.SignInInteractor;
 import com.yafuquen.abril.domain.model.User;
 import com.yafuquen.abril.domain.repository.UserRepository;
 
-import javax.inject.Inject;
-
 import io.reactivex.Observable;
 
 /**
@@ -14,11 +12,10 @@ import io.reactivex.Observable;
  *
  * @author yafuquen
  */
-public class SignInInteractorImpl implements SignInInteractor {
+class SignInInteractorImpl implements SignInInteractor {
 
     private final UserRepository userRepository;
 
-    @Inject
     public SignInInteractorImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }

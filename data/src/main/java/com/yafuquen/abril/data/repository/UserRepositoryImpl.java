@@ -11,8 +11,6 @@ import com.yafuquen.abril.domain.exception.SignInException;
 import com.yafuquen.abril.domain.model.User;
 import com.yafuquen.abril.domain.repository.UserRepository;
 
-import javax.inject.Inject;
-
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
@@ -22,11 +20,10 @@ import io.reactivex.ObservableOnSubscribe;
  *
  * @author yafuquen
  */
-public class UserRepositoryImpl implements UserRepository {
+class UserRepositoryImpl implements UserRepository {
 
     private final FirebaseAuth firebaseAuth;
 
-    @Inject
     public UserRepositoryImpl(FirebaseAuth firebaseAuth) {
         this.firebaseAuth = firebaseAuth;
     }

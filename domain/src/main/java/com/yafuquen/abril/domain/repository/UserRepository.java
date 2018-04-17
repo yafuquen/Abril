@@ -5,7 +5,7 @@ import com.yafuquen.abril.domain.model.User;
 import io.reactivex.Observable;
 
 /**
- * Repository for user process.
+ * Repository for user data.
  *
  * @author yafuquen
  */
