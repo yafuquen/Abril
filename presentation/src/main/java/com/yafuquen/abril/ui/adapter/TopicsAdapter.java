@@ -10,14 +10,14 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.yafuquen.abril.R;
-import com.yafuquen.abril.model.TopicParcel;
+import com.yafuquen.abril.domain.model.Topic;
 
 /**
  * Adapter for showing the topics.
  *
  * @author yafuquen
  */
-public class TopicsAdapter extends ArrayAdapter<TopicParcel> {
+public class TopicsAdapter extends ArrayAdapter<Topic> {
 
     public TopicsAdapter(@NonNull Context context) {
         super(context, R.layout.layout_topic);

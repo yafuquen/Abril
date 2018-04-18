@@ -7,6 +7,7 @@ import android.support.v7.widget.Toolbar;
 import android.widget.ListView;
 
 import com.yafuquen.abril.R;
+import com.yafuquen.abril.domain.model.Topic;
 import com.yafuquen.abril.injection.component.UserComponent;
 import com.yafuquen.abril.model.TopicParcel;
 import com.yafuquen.abril.presenter.TopicsPresenter;
@@ -58,7 +59,8 @@ public class TopicsActivity extends BaseActivity implements TopicsPresenter.View
     }
 
     private void showTopicMessages(int position) {
-        startActivity(TopicMessagesActivity.getCallingIntent(this, topicsAdapter.getItem(position)));
+        startActivity(TopicMessagesActivity.getCallingIntent(this,
+                new TopicParcel(topicsAdapter.getItem(position))));
     }
 
     public static Intent getCallingIntent(Activity activity) {
@@ -71,7 +73,7 @@ public class TopicsActivity extends BaseActivity implements TopicsPresenter.View
     }
 
     @Override
-    public void onReceivedTopic(TopicParcel topic) {
+    public void onReceivedTopic(Topic topic) {
         topicsAdapter.add(topic);
     }
 }

@@ -23,7 +23,8 @@ class TopicsInteractorImpl implements TopicsInteractor {
 
     private final CompositeDisposable disposables = new CompositeDisposable();
 
-    public TopicsInteractorImpl(TopicsRepository topicsRepository, Scheduler scheduler, Scheduler observerScheduler) {
+    public TopicsInteractorImpl(TopicsRepository topicsRepository, Scheduler scheduler,
+            Scheduler observerScheduler) {
         this.topicsRepository = topicsRepository;
         this.scheduler = scheduler;
         this.observerScheduler = observerScheduler;
@@ -31,7 +32,8 @@ class TopicsInteractorImpl implements TopicsInteractor {
 
     @Override
     public void getAvailableTopics(DisposableObserver<Topic> observer) {
-        disposables.add(topicsRepository.getAvailableTopics().subscribeOn(scheduler).observeOn(observerScheduler).subscribeWith(observer));
+        disposables.add(topicsRepository.getAvailableTopics().subscribeOn(scheduler).observeOn(
+                observerScheduler).subscribeWith(observer));
     }
 
     @Override

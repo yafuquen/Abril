@@ -30,7 +30,7 @@ public class TopicsPresenter extends BasePresenter {
                     @Override
                     public void onNext(Topic topic) {
                         if (isViewReady()) {
-                            view.onReceivedTopic(new TopicParcel(topic));
+                            view.onReceivedTopic(topic);
                         }
                     }
 
@@ -63,6 +63,6 @@ public class TopicsPresenter extends BasePresenter {
 
     public interface View extends BaseView {
 
-        void onReceivedTopic(TopicParcel topic);
+        void onReceivedTopic(Topic topic);
     }
 }

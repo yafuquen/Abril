@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
 import com.yafuquen.abril.R;
+import com.yafuquen.abril.domain.model.Topic;
+import com.yafuquen.abril.domain.model.TopicMessage;
 import com.yafuquen.abril.injection.component.UserComponent;
 import com.yafuquen.abril.model.TopicParcel;
 import com.yafuquen.abril.presenter.TopicMessagesPresenter;
@@ -35,10 +37,25 @@ public class TopicMessagesActivity extends BaseActivity implements TopicMessages
         topicMessagesPresenter.setView(this);
         if (getIntent().hasExtra(TOPIC)) {
             topicMessagesPresenter.loadTopic((TopicParcel) getIntent().getParcelableExtra(TOPIC));
-            topicMessagesPresenter.showTopicMessages();
         } else {
             finish();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        topicMessagesPresenter.resume();
+    }
+
+    @Override
+    public void showTopic(Topic topic) {
+        setTitle(topic.getName());
+    }
+
+    @Override
+    public void showMessage(TopicMessage topicMessage) {
+
     }
 
     public static Intent getCallingIntent(Activity activity, TopicParcel topic) {

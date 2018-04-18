@@ -1,7 +1,7 @@
 package com.yafuquen.abril.data.repository;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.messaging.FirebaseMessaging;
+import com.yafuquen.abril.domain.repository.TopicMessagesRepository;
 import com.yafuquen.abril.domain.repository.TopicsRepository;
 import com.yafuquen.abril.domain.repository.UserRepository;
 
@@ -17,7 +17,12 @@ public class RepositoryModule {
     }
 
     @Provides
-    TopicsRepository provideTopicsRepository(FirebaseMessaging firebaseMessaging) {
-        return new TopicsRepositoryImpl(firebaseMessaging);
+    TopicsRepository provideTopicsRepository(TopicsRepositoryImpl topicsRepository) {
+        return topicsRepository;
+    }
+
+    @Provides
+    TopicMessagesRepository provideTopicMessagesRepository() {
+        return new TopicMessagesRepositoryImpl();
     }
 }

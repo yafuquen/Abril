@@ -12,4 +12,6 @@ import io.reactivex.Observable;
 public interface UserRepository {
 
     Observable<User> signIn(String user, String password);
+
+    User getCurrentUser();
 }

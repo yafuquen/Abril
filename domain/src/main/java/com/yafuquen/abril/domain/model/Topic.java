@@ -1,5 +1,10 @@
 package com.yafuquen.abril.domain.model;
 
+/**
+ * Model for topic entity.
+ *
+ * @author yafuquen
+ */
 public class Topic {
 
     private String name;

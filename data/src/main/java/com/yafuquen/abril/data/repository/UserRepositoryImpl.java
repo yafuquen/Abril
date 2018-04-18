@@ -38,8 +38,7 @@ class UserRepositoryImpl implements UserRepository {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
-                                    emitter.onNext(new User(
-                                            firebaseAuth.getCurrentUser().getDisplayName()));
+                                    emitter.onNext(getCurrentUser());
                                     emitter.onComplete();
                                 } else {
                                     emitter.tryOnError(new SignInException());
@@ -54,5 +53,12 @@ class UserRepositoryImpl implements UserRepository {
                         });
             }
         });
+    }
+
+    @Override
+    public User getCurrentUser() {
+        return new User(
+                firebaseAuth.getCurrentUser().getDisplayName(),
+                firebaseAuth.getCurrentUser().getEmail());
     }
 }

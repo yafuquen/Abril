@@ -4,10 +4,11 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.messaging.FirebaseMessaging;
 import com.yafuquen.abril.domain.exception.TopicsException;
 import com.yafuquen.abril.domain.model.Topic;
 import com.yafuquen.abril.domain.repository.TopicsRepository;
+
+import javax.inject.Inject;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
@@ -20,10 +21,9 @@ import io.reactivex.ObservableOnSubscribe;
  */
 class TopicsRepositoryImpl implements TopicsRepository {
 
-    private final FirebaseMessaging firebaseMessaging;
-
-    public TopicsRepositoryImpl(FirebaseMessaging firebaseMessaging) {
-        this.firebaseMessaging = firebaseMessaging;
+    @Inject
+    public TopicsRepositoryImpl() {
+        // Constructor for injection
     }
 
     @Override
@@ -50,10 +50,5 @@ class TopicsRepositoryImpl implements TopicsRepository {
                         });
             }
         });
-    }
-
-    @Override
-    public void subscribeToTopic(Topic topic) {
-        firebaseMessaging.subscribeToTopic(topic.getName());
     }
 }

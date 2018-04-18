@@ -2,16 +2,19 @@ package com.yafuquen.abril.presenter;
 
 import com.yafuquen.abril.domain.interactor.TopicMessagesInteractor;
 import com.yafuquen.abril.domain.model.Topic;
+import com.yafuquen.abril.domain.model.TopicMessage;
 import com.yafuquen.abril.model.TopicParcel;
 
 import javax.inject.Inject;
+
+import io.reactivex.observers.DisposableObserver;
 
 /**
  * Presenter for the topic messages.
  *
  * @author yafuquen
  */
-public class TopicMessagesPresenter extends BasePresenter {
+public class TopicMessagesPresenter extends Presenter {
 
     private final TopicMessagesInteractor topicMessagesInteractor;
 
@@ -24,10 +27,34 @@ public class TopicMessagesPresenter extends BasePresenter {
         this.topicMessagesInteractor = topicMessagesInteractor;
     }
 
-    public void showTopicMessages() {
+    @Override
+    public void resume() {
         if (topic != null) {
-            topicMessagesInteractor.subscribeToTopic(topic);
+            topicMessagesInteractor.loadTopicMessages(topic,
+                    new DisposableObserver<TopicMessage>() {
+                        @Override
+                        public void onNext(TopicMessage topicMessage) {
+                            if(isViewReady()) {
+                                view.showMessage(topicMessage);
+                            }
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
         }
+    }
+
+    @Override
+    public void pause() {
+
     }
 
     @Override
@@ -40,10 +67,6 @@ public class TopicMessagesPresenter extends BasePresenter {
         return view;
     }
 
-    public void subscribeToTopic(Topic topic) {
-        topicMessagesInteractor.subscribeToTopic(topic);
-    }
-
     public void setView(View view) {
         this.view = view;
     }
@@ -51,9 +74,19 @@ public class TopicMessagesPresenter extends BasePresenter {
     public void loadTopic(TopicParcel topicParcel) {
         this.topic = new Topic();
         this.topic.setName(topicParcel.getName());
+        if(isViewReady()) {
+            view.showTopic(topic);
+        }
+    }
+
+    public void loadTopicMessages() {
+
     }
 
     public interface View extends BaseView {
 
+        void showTopic(Topic topic);
+
+        void showMessage(TopicMessage topicMessage);
     }
 }
