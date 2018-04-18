@@ -54,12 +54,13 @@ public class TopicMessagesPresenter extends Presenter {
 
     @Override
     public void pause() {
-        topicMessagesInteractor.pause();
+        topicMessagesInteractor.destroy();
     }
 
     @Override
     public void destroy() {
         topicMessagesInteractor.destroy();
+        view = null;
     }
 
     @Override

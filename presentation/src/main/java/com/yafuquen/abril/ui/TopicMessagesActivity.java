@@ -74,6 +74,12 @@ public class TopicMessagesActivity extends BaseActivity implements TopicMessages
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        topicMessagesPresenter.destroy();
+    }
+
+    @Override
     public void showTopic(Topic topic) {
         setTitle(topic.getName());
     }

@@ -13,9 +13,7 @@ import io.reactivex.Observable;
  */
 public interface TopicMessagesRepository {
 
-    Observable<TopicMessage> startObservingMessages(Topic topic);
-
-    void stopObservingMessages(Topic topic);
+    Observable<TopicMessage> loadTopicMessages(Topic topic);
 
     Observable<Void> sendMessage(Topic topic, User user, String message);
 }

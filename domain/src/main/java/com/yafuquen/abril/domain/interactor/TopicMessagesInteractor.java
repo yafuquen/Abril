@@ -10,7 +10,7 @@ import io.reactivex.observers.DisposableObserver;
  *
  * @author yafuquen
  */
-public interface TopicMessagesInteractor extends Interactor {
+public interface TopicMessagesInteractor extends BaseInteractor {
 
     void loadTopicMessages(Topic topic,
             DisposableObserver<TopicMessage> topicMessagesDisposableObserver);

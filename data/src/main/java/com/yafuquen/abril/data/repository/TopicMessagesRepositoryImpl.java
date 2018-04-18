@@ -29,7 +29,7 @@ public class TopicMessagesRepositoryImpl implements TopicMessagesRepository {
     }
 
     @Override
-    public Observable<TopicMessage> startObservingMessages(final Topic topic) {
+    public Observable<TopicMessage> loadTopicMessages(final Topic topic) {
         if (childEventListener != null) {
             stopObservingMessages(topic);
         }
@@ -62,14 +62,9 @@ public class TopicMessagesRepositoryImpl implements TopicMessagesRepository {
             };
             FirebaseDatabase.getInstance().getReference().child("messages").child(
                     topic.getName()).addChildEventListener(childEventListener);
+            emitter.setCancellable(() -> stopObservingMessages(topic));
         });
 
-    }
-
-    @Override
-    public void stopObservingMessages(Topic topic) {
-        FirebaseDatabase.getInstance().getReference().child("messages").child(
-                topic.getName()).removeEventListener(childEventListener);
     }
 
     @Override
@@ -89,5 +84,10 @@ public class TopicMessagesRepositoryImpl implements TopicMessagesRepository {
                         }
                     });
         });
+    }
+
+    private void stopObservingMessages(Topic topic) {
+        FirebaseDatabase.getInstance().getReference().child("messages").child(
+                topic.getName()).removeEventListener(childEventListener);
     }
 }
