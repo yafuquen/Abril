@@ -20,14 +20,14 @@ import com.yafuquen.abril.domain.model.Topic;
 public class TopicsAdapter extends ArrayAdapter<Topic> {
 
     public TopicsAdapter(@NonNull Context context) {
-        super(context, R.layout.layout_topic);
+        super(context, R.layout.view_topic);
     }
 
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.layout_topic, parent,
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.view_topic, parent,
                     false);
         }
         TextView nameTextView = convertView.findViewById(R.id.topic_name);

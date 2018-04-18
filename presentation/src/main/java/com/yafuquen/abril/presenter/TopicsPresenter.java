@@ -2,7 +2,6 @@ package com.yafuquen.abril.presenter;
 
 import com.yafuquen.abril.domain.interactor.TopicsInteractor;
 import com.yafuquen.abril.domain.model.Topic;
-import com.yafuquen.abril.model.TopicParcel;
 
 import javax.inject.Inject;
 

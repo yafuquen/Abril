@@ -5,13 +5,13 @@ package com.yafuquen.abril.presenter;
  *
  * @author yafuquen
  */
-public abstract class BasePresenter {
+abstract class BasePresenter {
 
     public abstract void destroy();
 
-    protected boolean isViewReady() {
+    boolean isViewReady() {
         return getView() != null && getView().isReady();
     }
 
-    protected abstract BaseView getView();
+    abstract BaseView getView();
 }

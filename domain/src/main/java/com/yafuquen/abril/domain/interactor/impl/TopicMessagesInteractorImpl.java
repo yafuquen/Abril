@@ -3,6 +3,7 @@ package com.yafuquen.abril.domain.interactor.impl;
 import com.yafuquen.abril.domain.interactor.TopicMessagesInteractor;
 import com.yafuquen.abril.domain.model.Topic;
 import com.yafuquen.abril.domain.model.TopicMessage;
+import com.yafuquen.abril.domain.model.User;
 import com.yafuquen.abril.domain.repository.TopicMessagesRepository;
 import com.yafuquen.abril.domain.repository.UserRepository;
 
@@ -27,13 +28,11 @@ public class TopicMessagesInteractorImpl implements TopicMessagesInteractor {
 
     private final CompositeDisposable disposables = new CompositeDisposable();
 
-    private DisposableObserver<TopicMessage> topicMessageDisposableObserver;
-
     private Topic topic;
 
     public TopicMessagesInteractorImpl(TopicMessagesRepository topicMessagesRepository,
-            UserRepository userRepository, Scheduler scheduler,
-            Scheduler observerScheduler) {
+                                       UserRepository userRepository, Scheduler scheduler,
+                                       Scheduler observerScheduler) {
         this.topicMessagesRepository = topicMessagesRepository;
         this.userRepository = userRepository;
         this.scheduler = scheduler;
@@ -42,9 +41,8 @@ public class TopicMessagesInteractorImpl implements TopicMessagesInteractor {
 
     @Override
     public void loadTopicMessages(Topic topic,
-            DisposableObserver<TopicMessage> topicMessagesDisposableObserver) {
+                                  DisposableObserver<TopicMessage> topicMessagesDisposableObserver) {
         this.topic = topic;
-        this.topicMessageDisposableObserver = topicMessagesDisposableObserver;
         disposables.add(this.topicMessagesRepository.startObservingMessages(topic).subscribeOn(
                 scheduler).observeOn(observerScheduler).subscribeWith(
                 topicMessagesDisposableObserver));
@@ -52,7 +50,7 @@ public class TopicMessagesInteractorImpl implements TopicMessagesInteractor {
 
     @Override
     public void sendMessage(Topic topic, String message,
-            DisposableObserver<Void> addMessageDisposableObserver) {
+                            DisposableObserver<Void> addMessageDisposableObserver) {
         disposables.add(this.topicMessagesRepository.sendMessage(topic,
                 userRepository.getCurrentUser(), message).subscribeOn(
                 scheduler).observeOn(observerScheduler).subscribeWith(
@@ -60,17 +58,26 @@ public class TopicMessagesInteractorImpl implements TopicMessagesInteractor {
     }
 
     @Override
+    public String getUsername() {
+        User user = userRepository.getCurrentUser();
+        if (user != null) {
+            return user.getUsername();
+        }
+        return "";
+    }
+
+    @Override
     public void destroy() {
+        stopObservingMessages();
         disposables.clear();
-        topicMessageDisposableObserver.dispose();
-        topicMessageDisposableObserver = null;
     }
 
     @Override
     public void pause() {
-        if (topicMessageDisposableObserver != null) {
-            topicMessageDisposableObserver.onComplete();
-        }
+        stopObservingMessages();
+    }
+
+    private void stopObservingMessages() {
         if (topic != null) {
             topicMessagesRepository.stopObservingMessages(topic);
         }

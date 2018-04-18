@@ -17,4 +17,6 @@ public interface TopicMessagesInteractor extends Interactor {
 
     void sendMessage(Topic topic, String message,
             DisposableObserver<Void> addMessageDisposableObserver);
+
+    String getUsername();
 }

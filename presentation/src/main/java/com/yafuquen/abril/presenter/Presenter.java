@@ -5,7 +5,7 @@ package com.yafuquen.abril.presenter;
  *
  * @author yafuquen
  */
-public abstract class Presenter extends BasePresenter {
+abstract class Presenter extends BasePresenter {
 
     public abstract void resume();
 

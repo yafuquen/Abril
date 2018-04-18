@@ -54,12 +54,12 @@ public class TopicMessagesPresenter extends Presenter {
 
     @Override
     public void pause() {
-
+        topicMessagesInteractor.pause();
     }
 
     @Override
     public void destroy() {
-
+        topicMessagesInteractor.destroy();
     }
 
     @Override
@@ -98,6 +98,10 @@ public class TopicMessagesPresenter extends Presenter {
                 }
             });
         }
+    }
+
+    public String getUsername() {
+        return topicMessagesInteractor.getUsername();
     }
 
     public interface View extends BaseView {

@@ -40,7 +40,6 @@ public class TopicsActivity extends BaseActivity implements TopicsPresenter.View
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        inject();
         setContentView(R.layout.activity_topics);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);

@@ -14,12 +14,12 @@ public class TopicParcel implements Parcelable {
 
     private String name;
 
-    public TopicParcel(Parcel in) {
-        this.name = in.readString();
-    }
-
     public TopicParcel(Topic topic) {
         this.name = topic.getName();
+    }
+
+    private TopicParcel(Parcel in) {
+        this.name = in.readString();
     }
 
     public String getName() {

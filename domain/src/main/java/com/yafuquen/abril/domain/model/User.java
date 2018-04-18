@@ -7,12 +7,9 @@ package com.yafuquen.abril.domain.model;
  */
 public class User {
 
-    private final String displayName;
-
     private final String username;
 
-    public User(String displayName, String username) {
-        this.displayName = displayName;
+    public User(String username) {
         this.username = username;
     }
 

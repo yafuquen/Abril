@@ -47,15 +47,14 @@ public class TopicMessagesActivity extends BaseActivity implements TopicMessages
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        inject();
         setContentView(R.layout.activity_topic_messages);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         topicMessagesPresenter.setView(this);
-        topicMessagesAdapter = new TopicMessagesAdapter(this);
+        topicMessagesAdapter = new TopicMessagesAdapter(this, topicMessagesPresenter.getUsername());
         messageList.setAdapter(topicMessagesAdapter);
         if (getIntent().hasExtra(TOPIC)) {
-            topicMessagesPresenter.loadTopic((TopicParcel) getIntent().getParcelableExtra(TOPIC));
+            topicMessagesPresenter.loadTopic(getIntent().getParcelableExtra(TOPIC));
         } else {
             finish();
         }
@@ -82,7 +81,7 @@ public class TopicMessagesActivity extends BaseActivity implements TopicMessages
     @Override
     public void showMessage(TopicMessage topicMessage) {
         topicMessagesAdapter.add(topicMessage);
-        messageList.smoothScrollToPosition(topicMessagesAdapter.getCount() - 1);
+
     }
 
     private void sendMessage() {

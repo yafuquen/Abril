@@ -39,8 +39,8 @@ public class SignInActivity extends BaseActivity implements SignInPresenter.View
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        inject();
         setContentView(R.layout.activity_sign_in);
+        setTitle(R.string.title_activity_sign_in);
         ButterKnife.bind(this);
         signInPresenter.setView(this);
     }
@@ -61,6 +61,7 @@ public class SignInActivity extends BaseActivity implements SignInPresenter.View
     @Override
     public void onSuccessSignIn() {
         signInButton.setEnabled(true);
+        passwordInput.getText().clear();
         Intent intent = TopicsActivity.getCallingIntent(this);
         startActivity(intent);
     }
