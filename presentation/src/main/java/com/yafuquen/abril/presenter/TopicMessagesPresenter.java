@@ -34,7 +34,7 @@ public class TopicMessagesPresenter extends Presenter {
                     new DisposableObserver<TopicMessage>() {
                         @Override
                         public void onNext(TopicMessage topicMessage) {
-                            if(isViewReady()) {
+                            if (isViewReady()) {
                                 view.showMessage(topicMessage);
                             }
                         }
@@ -74,13 +74,30 @@ public class TopicMessagesPresenter extends Presenter {
     public void loadTopic(TopicParcel topicParcel) {
         this.topic = new Topic();
         this.topic.setName(topicParcel.getName());
-        if(isViewReady()) {
+        if (isViewReady()) {
             view.showTopic(topic);
         }
     }
 
-    public void loadTopicMessages() {
+    public void sendMessage(String message) {
+        if (message.trim().length() > 0) {
+            topicMessagesInteractor.sendMessage(topic, message, new DisposableObserver<Void>() {
+                @Override
+                public void onNext(Void aVoid) {
 
+                }
+
+                @Override
+                public void onError(Throwable e) {
+
+                }
+
+                @Override
+                public void onComplete() {
+
+                }
+            });
+        }
     }
 
     public interface View extends BaseView {

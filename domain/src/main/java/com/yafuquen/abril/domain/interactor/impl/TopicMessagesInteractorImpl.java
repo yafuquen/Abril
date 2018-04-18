@@ -29,6 +29,8 @@ public class TopicMessagesInteractorImpl implements TopicMessagesInteractor {
 
     private DisposableObserver<TopicMessage> topicMessageDisposableObserver;
 
+    private Topic topic;
+
     public TopicMessagesInteractorImpl(TopicMessagesRepository topicMessagesRepository,
             UserRepository userRepository, Scheduler scheduler,
             Scheduler observerScheduler) {
@@ -41,8 +43,9 @@ public class TopicMessagesInteractorImpl implements TopicMessagesInteractor {
     @Override
     public void loadTopicMessages(Topic topic,
             DisposableObserver<TopicMessage> topicMessagesDisposableObserver) {
+        this.topic = topic;
         this.topicMessageDisposableObserver = topicMessagesDisposableObserver;
-        disposables.add(this.topicMessagesRepository.getMessagesForTopic(topic).subscribeOn(
+        disposables.add(this.topicMessagesRepository.startObservingMessages(topic).subscribeOn(
                 scheduler).observeOn(observerScheduler).subscribeWith(
                 topicMessagesDisposableObserver));
     }
@@ -59,6 +62,7 @@ public class TopicMessagesInteractorImpl implements TopicMessagesInteractor {
     @Override
     public void destroy() {
         disposables.clear();
+        topicMessageDisposableObserver.dispose();
         topicMessageDisposableObserver = null;
     }
 
@@ -67,6 +71,8 @@ public class TopicMessagesInteractorImpl implements TopicMessagesInteractor {
         if (topicMessageDisposableObserver != null) {
             topicMessageDisposableObserver.onComplete();
         }
-        topicMessagesRepository.stopTopicMessagesObservable();
+        if (topic != null) {
+            topicMessagesRepository.stopObservingMessages(topic);
+        }
     }
 }

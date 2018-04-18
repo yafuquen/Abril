@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.widget.EditText;
+import android.widget.ListView;
 
 import com.yafuquen.abril.R;
 import com.yafuquen.abril.domain.model.Topic;
@@ -11,21 +13,36 @@ import com.yafuquen.abril.domain.model.TopicMessage;
 import com.yafuquen.abril.injection.component.UserComponent;
 import com.yafuquen.abril.model.TopicParcel;
 import com.yafuquen.abril.presenter.TopicMessagesPresenter;
+import com.yafuquen.abril.ui.adapter.TopicMessagesAdapter;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class TopicMessagesActivity extends BaseActivity implements TopicMessagesPresenter.View {
 
     private static final String TOPIC = "topic";
+
+    private TopicMessagesAdapter topicMessagesAdapter;
 
     @Inject
     TopicMessagesPresenter topicMessagesPresenter;
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+
+    @BindView(R.id.message_text)
+    EditText messageInput;
+
+    @BindView(R.id.message_list)
+    ListView messageList;
+
+    @OnClick(R.id.send_message)
+    void onSendMessageClick() {
+        sendMessage();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +52,8 @@ public class TopicMessagesActivity extends BaseActivity implements TopicMessages
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         topicMessagesPresenter.setView(this);
+        topicMessagesAdapter = new TopicMessagesAdapter(this);
+        messageList.setAdapter(topicMessagesAdapter);
         if (getIntent().hasExtra(TOPIC)) {
             topicMessagesPresenter.loadTopic((TopicParcel) getIntent().getParcelableExtra(TOPIC));
         } else {
@@ -49,13 +68,26 @@ public class TopicMessagesActivity extends BaseActivity implements TopicMessages
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        topicMessagesAdapter.clear();
+        topicMessagesPresenter.pause();
+    }
+
+    @Override
     public void showTopic(Topic topic) {
         setTitle(topic.getName());
     }
 
     @Override
     public void showMessage(TopicMessage topicMessage) {
+        topicMessagesAdapter.add(topicMessage);
+        messageList.smoothScrollToPosition(topicMessagesAdapter.getCount() - 1);
+    }
 
+    private void sendMessage() {
+        topicMessagesPresenter.sendMessage(messageInput.getText().toString());
+        messageInput.getText().clear();
     }
 
     public static Intent getCallingIntent(Activity activity, TopicParcel topic) {

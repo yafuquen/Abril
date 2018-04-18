@@ -32,7 +32,6 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.TopicMessagesActivity"
-            android:label="@string/title_activity_topic_messages"
             android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait" />
     </application>
